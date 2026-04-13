@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print the Event Name
-        run: echo "Workflow triggered by: ${{ github.event_name }}"
+        run: echo "Workflow triggered by context variable :${{ github.event_name }}"
 
       - name: Print Manual Input Options (If applicable)
         # We can use the 'if' conditional to only run this step if the trigger was manual
