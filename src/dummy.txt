@@ -1,1 +1,1 @@
-This is a dummy file designed to successfully trigger the GitHub Actions pipeline based on the `paths: src/**` rule.
+# This is a dummy file designed to successfully trigger the GitHub Actions pipeline based on the `paths: src/**` rule.
