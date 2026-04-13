@@ -1,0 +1,37 @@
+# .github/workflows/foundations-demo.yml
+
+# 1. The name of the workflow as it will appear in the GitHub Actions UI tab.
+name: Foundations Demo Workflow
+
+# 2. Events/Triggers: When should this workflow run?
+on:
+  push:
+    branches:
+      - main
+  # 'workflow_dispatch' allows you to securely trigger the workflow manually from the GitHub UI
+  workflow_dispatch: 
+
+# 3. Jobs: What should happen when it runs?
+jobs:
+  # The ID of the job (e.g., "explore_actions"). A workflow can have multiple jobs.
+  explore_actions:
+    # 4. Runner: The type of machine OS to run the job on
+    runs-on: ubuntu-latest
+    
+    # 5. Steps: The sequence of tasks to execute inside this job
+    steps:
+      # Step A: Using a pre-built Action to download (checkout) the repo code to the runner
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step B: Running a simple shell command
+      - name: Print a greeting message
+        run: echo "Hello! Welcome to GitHub Actions CI/CD Foundations."
+
+      # Step C: Running a multi-line shell command
+      - name: List files in workflow workspace
+        run: |
+          echo "Current working directory:"
+          pwd
+          echo "Files in directory:"
+          ls -la
