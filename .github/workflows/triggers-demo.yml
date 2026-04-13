@@ -1,0 +1,61 @@
+# .github/workflows/triggers-demo.yml
+
+name: Advanced Events and Triggers
+
+# A comprehensive trigger block
+on:
+  # 1. Trigger when changes are pushed to main, but ONLY if files inside 'src/' change.
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      
+  # 2. Trigger on pull requests targeting the main branch when they are successfully closed (merged).
+  pull_request:
+    branches:
+      - main
+    types: 
+      - closed
+      
+  # 3. Scheduled Trigger: Run at 2:00 AM UTC every Sunday
+  schedule:
+    - cron: '0 2 * * 0'
+    
+  # 4. Manual Trigger with custom UI inputs!
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+      reason:
+        description: 'Reason for manual trigger'
+        required: false
+        type: string
+
+jobs:
+  demonstrate-triggers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print the Event Name
+        run: echo "Workflow triggered by: ${{ github.event_name }}"
+
+      - name: Print Manual Input Options (If applicable)
+        # We can use the 'if' conditional to only run this step if the trigger was manual
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "Deploying to Environment: ${{ inputs.environment }}"
+          echo "Reason: ${{ inputs.reason }}"
+          
+      - name: Action on Pull Request Close
+        if: github.event_name == 'pull_request' && github.event.action == 'closed'
+        run: echo "A pull request was recently closed!"
+        
+      - name: Scheduled Routine
+        if: github.event_name == 'schedule'
+        run: echo "Running our scheduled weekend task!"
