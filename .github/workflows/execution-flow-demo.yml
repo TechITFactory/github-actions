@@ -31,7 +31,7 @@ jobs:
           
       - name: Simulate Failure
         # 2. Step level conditional
-        if: inputs.simulate_failure == true
+        if: inputs.simulate_failure == false
         run: exit 1 # The exit 1 command forces the runner to log a failure
 
   # Job 2: Depends on Job 1
