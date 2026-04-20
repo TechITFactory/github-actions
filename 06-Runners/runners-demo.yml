@@ -1,0 +1,39 @@
+# .github/workflows/runners-demo.yml
+
+name: Runner Matrix Demonstration
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  # A single job definition that will "fan-out" into 3 different jobs in the UI!
+  multi-os-build:
+    # 1. Define the strategy matrix
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        
+    # 2. Assign the 'runs-on' value dynamically to the matrix variable
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - name: Print OS Specific Details
+        # PowerShell is the default shell on windows, bash on linux/mac
+        run: |
+          echo "Running natively on OS: ${{ runner.os }}"
+          echo "Hardware Architecture: ${{ runner.arch }}"
+          
+      # 3. Running platform-specific commands gracefully using 'if' statements
+      - name: Linux specific command
+        if: runner.os == 'Linux'
+        run: uname -a
+        
+      - name: Windows specific command
+        if: runner.os == 'Windows'
+        run: systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+        
+      - name: macOS specific command
+        if: runner.os == 'macOS'
+        run: sw_vers
